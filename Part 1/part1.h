@@ -1,4 +1,4 @@
-
+#include <stdexcept>
 
 struct VAR { 
   static constexpr int eval(int var_variable){
@@ -37,7 +37,11 @@ struct MUL {
 template <class L, class R>
 struct DIV {
     static constexpr int eval(int var_variable){
-        return L::eval(var_variable) / R::eval(var_variable);
+        int right = R::eval(var_variable);
+        if (right == 0){
+            throw std::invalid_argument("Divide By Zero");
+        }
+        return L::eval(var_variable) / right;
     };
 };
 
