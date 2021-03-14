@@ -44,23 +44,3 @@ struct DIV {
         return L::eval(var_variable) / right;
     };
 };
-
-
-// Static Evaluation Stuff:
-// template <int b, class F>
-// struct EVAL;
-
-// template <int b>
-// struct EVAL <b, VAR> {
-//     enum {RET = b};
-// };
-
-// template <int b, int V>
-// struct EVAL <b, LIT<V> > {
-//     enum {RET = V};
-// };
-
-// template <int b , class L, class R>
-// struct EVAL <b, ADD<L,R> > {
-//    enum { RET = EVAL<b,L>::RET  +  EVAL<b,R>::RET } ;
-// };
