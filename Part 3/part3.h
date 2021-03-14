@@ -8,6 +8,21 @@ struct BOUNDS{
     };
 };
 
+// Min and Max Functions for internal use.
+template <int X, int Y>
+struct MIN {
+    enum{
+        result = ((X<Y) ? X: Y)
+    };
+};
+
+template <int X, int Y>
+struct MAX {
+    enum{
+        result = ((X>Y) ? X: Y)
+    };
+};
+
 template <class bound, int id>
 struct VAR { 
     static constexpr int eval(int var_variable[]){
@@ -61,8 +76,14 @@ struct MUL {
         return L::eval(var_variable) * R::eval(var_variable);
     };
     enum{
-      lower = L::lower * R::lower,
-      upper = L::upper * R::upper
+        lower = MIN<
+                    MIN<L::lower*R::lower, L::lower*R::upper>::result,
+                    MIN<L::upper*R::lower, L::upper*R::upper>::result
+                >::result,
+        upper = MAX<
+                    MAX<L::lower*R::lower, L::lower*R::upper>::result,
+                    MAX<L::upper*R::lower, L::upper*R::upper>::result
+                >::result
     };
 };
 
@@ -76,7 +97,13 @@ struct DIV {
         return L::eval(var_variable) / right;
     };
     enum{
-        lower = L::lower / R::upper,
-        upper = L::upper / R::lower
+        lower = MIN<
+                    MIN<L::lower/R::lower, L::lower/R::upper>::result,
+                    MIN<L::upper/R::lower, L::upper/R::upper>::result
+                >::result,
+        upper = MAX<
+                    MAX<L::lower/R::lower, L::lower/R::upper>::result,
+                    MAX<L::upper/R::lower, L::upper/R::upper>::result
+                >::result
     };
 };
