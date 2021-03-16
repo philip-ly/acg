@@ -16,8 +16,8 @@ int main(int argc, const char * argv[]) {
             >
         >
     FORMULA;
-    typedef ADD<LIT<10>,VAR<BOUNDS<-1,10>>> shorttest;
-    typedef DIV<LIT<10>,VAR<BOUNDS<-1,10>>> shorttest2;
+    typedef ADD<LIT<10>,VAR<BOUNDS<1,10>>> shorttest;
+    typedef DIV<LIT<10>,VAR<BOUNDS<0,1>>> shorttest2;
 
     int x = shorttest::lower;
     
