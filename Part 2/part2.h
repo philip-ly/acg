@@ -87,7 +87,7 @@ struct SUB {
 };
 
 //Multiplication L * R
-//Calculates all combinations and takes the minumum/maximum.
+//Bounds Calculates all combinations and takes the minumum/maximum.
 template <class L, class R>
 struct MUL {
     static constexpr int eval(int var_variable){
@@ -106,6 +106,7 @@ struct MUL {
 };
 
 //Division L / R
+//Division by 0 throws error
 //If a bound crosses 0, 0 is ignored.
 //If a bound is 0, the integer value that excludes 0 is taken. I.e [0,10] -> [1,10], [-10,0] -> [-10,-1]
 //If both bounds are 0, an error is shown.

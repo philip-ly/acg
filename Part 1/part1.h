@@ -1,11 +1,12 @@
 #include <stdexcept>
-
+//Variable
 struct VAR { 
   static constexpr int eval(int var_variable){
     return var_variable;
   };  
 };
 
+//Literal Integer, V
 template <int V>
 struct LIT {
   static constexpr int eval(int var_variable){
@@ -13,6 +14,7 @@ struct LIT {
   };
 };
 
+//Addition L + R
 template <class L, class R>
 struct ADD {
     static constexpr int eval(int var_variable){
@@ -20,6 +22,7 @@ struct ADD {
     };
 };
 
+//Subtraction L - R
 template <class L, class R>
 struct SUB {
     static constexpr int eval(int var_variable){
@@ -27,6 +30,7 @@ struct SUB {
     };
 };
 
+//Multiplication L * R
 template <class L, class R>
 struct MUL {
     static constexpr int eval(int var_variable){
@@ -34,6 +38,7 @@ struct MUL {
     };
 };
 
+//Division L / R, division by 0 throws error.
 template <class L, class R>
 struct DIV {
     static constexpr int eval(int var_variable){
