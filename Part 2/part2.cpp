@@ -21,7 +21,7 @@ int main(int argc, const char * argv[]) {
 
     int x = shorttest::lower;
     
-    printf("Lower: %d\nUpper: %d \n", shorttest2::lower , shorttest2::upper);
-    printf("Answer: %d\n", (shorttest2::eval(1)));
+    printf("Lower: %d\nUpper: %d \n", FORMULA::lower , FORMULA::upper);
+    printf("Answer: %d\n", (FORMULA::eval(1)));
     //static_assert(FORMULA::eval(0) == 6);
 };

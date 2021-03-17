@@ -36,13 +36,13 @@ struct IFZERO {
 };
 
 //Variable, with bounds and ID - an integer value corresponding to the position in the input array.
-template <class bound, int id>
+template <class bound>
 struct VAR { 
-    static constexpr int eval(int var_variable[]){
-        if (var_variable[id]>bound::upper || var_variable[id]<bound::lower){
+    static constexpr int eval(int var_variable[], int *counter){
+        if (var_variable[*counter]>bound::upper || var_variable[*counter]<bound::lower){
             throw std::invalid_argument("Variable is outside bounds.");
         }
-        return var_variable[id];
+        return var_variable[*counter++];
     };
     enum{
         lower = bound::lower,
@@ -53,7 +53,7 @@ struct VAR {
 //Literal Integer
 template <int V>
 struct LIT {
-    static constexpr int eval(int var_variable[]){
+    static constexpr int eval(int var_variable[], int *counter){
         return V;
     }
     enum{
@@ -65,8 +65,8 @@ struct LIT {
 //Addition
 template <class L, class R>
 struct ADD {
-    static constexpr int eval(int var_variable[]){
-      return L::eval(var_variable) + R::eval(var_variable);
+    static constexpr int eval(int var_variable[], int *counter){
+      return L::eval(var_variable, counter) + R::eval(var_variable, counter);
     };
     enum{
       lower = L::lower + R::lower,
@@ -77,8 +77,8 @@ struct ADD {
 //Subtraction
 template <class L, class R>
 struct SUB {
-    static constexpr int eval(int var_variable[]){
-        return L::eval(var_variable) - R::eval(var_variable);
+    static constexpr int eval(int var_variable[], int *counter){
+        return L::eval(var_variable, counter) - R::eval(var_variable, counter);
     };
     enum{
       lower = L::lower - R::lower,
@@ -90,8 +90,8 @@ struct SUB {
 //Calculates all combinations and takes the minumum/maximum.
 template <class L, class R>
 struct MUL {
-    static constexpr int eval(int var_variable[]){
-        return L::eval(var_variable) * R::eval(var_variable);
+    static constexpr int eval(int var_variable[], int *counter){
+        return L::eval(var_variable, counter) * R::eval(var_variable, counter);
     };
     enum{
         lower = MIN<
@@ -112,8 +112,8 @@ struct MUL {
 //Otherwise, tries all combinations, taking the min/max for lower and upper bounds respectively.
 template <class L, class R>
 struct DIV {
-    static constexpr int eval(int var_variable[]){
-        int right = R::eval(var_variable);
+    static constexpr int eval(int var_variable[], int *counter){
+        int right = R::eval(var_variable, counter);
         if (right == 0){
             throw std::invalid_argument("Divide By Zero");
         }

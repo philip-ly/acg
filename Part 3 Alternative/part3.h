@@ -35,14 +35,14 @@ struct IFZERO {
     };
 };
 
-//Variable with bounds.
-template <class bound>
+//Variable, with bounds and ID - an integer value corresponding to the position in the input array.
+template <class bound, int id>
 struct VAR { 
-    static constexpr int eval(int var_variable){
-        if (var_variable>bound::upper || var_variable<bound::lower){
+    static constexpr int eval(int var_variable[]){
+        if (var_variable[id]>bound::upper || var_variable[id]<bound::lower){
             throw std::invalid_argument("Variable is outside bounds.");
         }
-        return var_variable;
+        return var_variable[id];
     };
     enum{
         lower = bound::lower,
@@ -50,10 +50,10 @@ struct VAR {
     };
 };
 
-//Literal Integer, V
+//Literal Integer
 template <int V>
 struct LIT {
-    static constexpr int eval(int var_variable){
+    static constexpr int eval(int var_variable[]){
         return V;
     }
     enum{
@@ -62,35 +62,35 @@ struct LIT {
     };
 };
 
-//Addition L + R
+//Addition
 template <class L, class R>
 struct ADD {
-    static constexpr int eval(int var_variable){
-        return L::eval(var_variable) + R::eval(var_variable);
+    static constexpr int eval(int var_variable[]){
+      return L::eval(var_variable) + R::eval(var_variable);
     };
     enum{
-        lower = L::lower + R::lower,
-        upper = L::upper + R::upper
+      lower = L::lower + R::lower,
+      upper = L::upper + R::upper
     };
 };
 
-//Subtraction L - R
+//Subtraction
 template <class L, class R>
 struct SUB {
-    static constexpr int eval(int var_variable){
+    static constexpr int eval(int var_variable[]){
         return L::eval(var_variable) - R::eval(var_variable);
     };
     enum{
-        lower = L::lower - R::lower,
-        upper = L::upper - R::upper
+      lower = L::lower - R::lower,
+      upper = L::upper - R::upper
     };
 };
 
-//Multiplication L * R
+//Multiplication
 //Calculates all combinations and takes the minumum/maximum.
 template <class L, class R>
 struct MUL {
-    static constexpr int eval(int var_variable){
+    static constexpr int eval(int var_variable[]){
         return L::eval(var_variable) * R::eval(var_variable);
     };
     enum{
@@ -105,15 +105,14 @@ struct MUL {
     };
 };
 
-//Division L / R
+//Division
 //If a bound crosses 0, 0 is ignored.
 //If a bound is 0, the integer value that excludes 0 is taken. I.e [0,10] -> [1,10], [-10,0] -> [-10,-1]
 //If both bounds are 0, an error is shown.
 //Otherwise, tries all combinations, taking the min/max for lower and upper bounds respectively.
 template <class L, class R>
 struct DIV {
-    static_assert((R::lower != 0 || R::upper !=0), "The bounds of a division cannot both be 0.");
-    static constexpr int eval(int var_variable){
+    static constexpr int eval(int var_variable[]){
         int right = R::eval(var_variable);
         if (right == 0){
             throw std::invalid_argument("Divide By Zero");

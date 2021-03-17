@@ -1,10 +1,10 @@
 #include <iostream>
 #include "part3.h"
 
+//This version of part 3 uses a pointer in eval to count the current position in the variable array.
 int main(int argc, const char * argv[]) {
-    typedef ADD<VAR<BOUNDS<1,10>,0>,MUL<SUB<VAR<BOUNDS<1,10>,0>,LIT<2>>,SUB<VAR<BOUNDS<1,10>,0>,LIT<3>>>> FORMULA;
-    // printf("Hi");
-    typedef ADD<VAR<BOUNDS<5,10>,1>,VAR<BOUNDS<5,10>,0>> shorttest;
+    typedef ADD<VAR<BOUNDS<1,10>>,MUL<SUB<VAR<BOUNDS<1,10>>,LIT<2>>,SUB<VAR<BOUNDS<1,10>>,LIT<3>>>> FORMULA;
+    typedef ADD<VAR<BOUNDS<5,10>>,VAR<BOUNDS<5,10>>> shorttest;
 
     int x = shorttest::lower;
     int vals [] = {8,6};
@@ -16,14 +16,12 @@ int main(int argc, const char * argv[]) {
     int outputs [numberOfInputs];
 
     for (int i=0 ; i<numberOfInputs; ++i){
-        outputs[i] = FORMULA::eval(inputs[i]);
+        // A pointer to an int is used to keep track of the position in the array for each variable.
+        int x = 0;
+        outputs[i] = FORMULA::eval(inputs[i], &x); 
         printf("Answer: Input %d = %d \n", i, outputs[i]);
         // printf("Lower Bound: %d = %d ", i, outputs[i]);
         // printf("Upper Bound: %d = %d", i, outputs[i]);
     };
-    
-    // printf("Lower: %d\nUpper: %d \n", shorttest::lower , shorttest::upper);
-    // printf("Answer: %d\n", (shorttest::eval(vals)));
-    //typedef ADD<LIT<10>,LIT<10>>
-    // printf("Static %d", (EVAL<10,FORMULA>::RET));
+
 };
