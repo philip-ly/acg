@@ -112,6 +112,7 @@ struct MUL {
 //Otherwise, tries all combinations, taking the min/max for lower and upper bounds respectively.
 template <class L, class R>
 struct DIV {
+    static_assert((R::lower != 0 || R::upper !=0), "The bounds of a division cannot both be 0.");
     static constexpr int eval(int var_variable[]){
         int right = R::eval(var_variable);
         if (right == 0){
